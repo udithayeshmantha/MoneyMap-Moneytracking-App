@@ -17,7 +17,7 @@ class Landing extends StatelessWidget {
             Text(
               'MoneyMap',
               style: TextStyle(
-                color: Colors.purple,
+                color: Colors.white,
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
@@ -35,7 +35,7 @@ class Landing extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.check_circle, color: Colors.purple),
+                Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -52,7 +52,7 @@ class Landing extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.check_circle, color: Colors.purple),
+                Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -69,7 +69,7 @@ class Landing extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.check_circle, color: Colors.purple),
+                Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -87,7 +87,7 @@ class Landing extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
+                  backgroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -102,7 +102,7 @@ class Landing extends StatelessWidget {
                 child: Text(
                   'Get Started',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16,
                   ),
                 ),
