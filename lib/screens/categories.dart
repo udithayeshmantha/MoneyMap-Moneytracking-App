@@ -75,7 +75,6 @@ class Categories extends StatelessWidget {
                 color: Colors.deepPurple,
               ),
             ),
-            
             title: Text(
               category['name'] as String,
               style: const TextStyle(color: Colors.white, fontSize: 18),
