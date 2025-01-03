@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:money_tracking_app/screens/login.dart';
 
 class Landing extends StatelessWidget {
@@ -94,10 +95,7 @@ class Landing extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Login()),
-                  );
+                  Get.toNamed('/login');
                 },
                 child: const Text(
                   'Get Started',
