@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracking_app/screens/Landing.dart';
 import 'package:flutter/services.dart';
-<<<<<<< HEAD
 import 'package:money_tracking_app/screens/accounts.dart';
-=======
 import 'package:money_tracking_app/screens/home.dart';
 import 'package:money_tracking_app/screens/login.dart';
->>>>>>> 3cdf425209cd31115ecd1d3bb98e139ffed45977
 
 void main() {
   runApp(const MyApp());
@@ -25,11 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-<<<<<<< HEAD
-      home:  AccountsScreen(),
-=======
-      home: const Home(),
->>>>>>> 3cdf425209cd31115ecd1d3bb98e139ffed45977
+      home: Home(),
     );
   }
 }

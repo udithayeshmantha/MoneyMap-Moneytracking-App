@@ -32,7 +32,7 @@ class AccountCard extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             'Total Balance',
-            style: TextStyle(fontSize: 16, color: Colors.grey.shade300),
+            style: TextStyle(fontSize: 16, color: const Color.fromARGB(255, 248, 244, 244)),
           ),
           Text(
             'Rs$balance',
