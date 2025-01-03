@@ -27,7 +27,7 @@ class AccountCard extends StatelessWidget {
         children: [
           Text(
             accountName,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
           ),
           SizedBox(height: 8),
           Text(
@@ -36,7 +36,7 @@ class AccountCard extends StatelessWidget {
           ),
           Text(
             'Rs$balance',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white),
           ),
           SizedBox(height: 10),
           Row(

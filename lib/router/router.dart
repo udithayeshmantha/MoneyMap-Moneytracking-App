@@ -1,0 +1,14 @@
+import 'package:get/get.dart';
+import 'package:money_tracking_app/screens/Landing.dart';
+import 'package:money_tracking_app/screens/accounts.dart';
+import 'package:money_tracking_app/screens/home.dart';
+import 'package:money_tracking_app/screens/login.dart';
+
+class RouterClass {
+  final List<GetPage> routes = [
+    GetPage( name: '/', page: () => Landing(),),
+    GetPage( name: '/login', page: () => Login(),),
+    GetPage( name: '/home',page: () =>  Home(),),
+    GetPage( name: '/accounts',page: () =>  AccountsScreen(),),
+  ];
+}
