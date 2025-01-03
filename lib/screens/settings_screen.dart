@@ -7,15 +7,21 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color.fromARGB(255, 20, 17, 24),
         appBar: AppBar(
-            title: const Text(
+          automaticallyImplyLeading: false,
+          title: const Text(
             "Settings",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
             ),
+          ),
           centerTitle: false,
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.transparent,
           elevation: 0,
+          toolbarHeight: 75,
         ),
         body: ListView(
           padding: const EdgeInsets.all(16.0),

@@ -8,11 +8,16 @@ class AccountsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       appBar: AppBar(
+        toolbarHeight: 75,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         title: const Text(
           'Accounts',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
         ),
         centerTitle: false,
       ),

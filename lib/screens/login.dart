@@ -7,7 +7,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 6, 0, 14),
+      backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -17,7 +17,7 @@ class Login extends StatelessWidget {
             // Logo
             const Icon(
               Icons.account_balance_wallet_outlined,
-              color: Color.fromARGB(255, 7, 0, 0),
+              color: Color.fromARGB(255, 255, 255, 255),
               size: 80.0,
             ),
             const SizedBox(height: 20.0),
