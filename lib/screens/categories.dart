@@ -47,10 +47,8 @@ class Categories extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       appBar: AppBar(
         toolbarHeight: 75,
-
         automaticallyImplyLeading: false, // Remove the back button
         backgroundColor: Colors.transparent,
-        // Change the background color
         elevation: 0,
         title: const Align(
           alignment: Alignment.centerLeft,
@@ -65,8 +63,7 @@ class Categories extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
+      body: ListView.separated(
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
@@ -78,6 +75,7 @@ class Categories extends StatelessWidget {
                 color: Colors.deepPurple,
               ),
             ),
+            
             title: Text(
               category['name'] as String,
               style: const TextStyle(color: Colors.white, fontSize: 18),
@@ -91,6 +89,12 @@ class Categories extends StatelessWidget {
             },
           );
         },
+        separatorBuilder: (context, index) => Divider(
+          indent: 50,
+          endIndent: 20,
+          color: Colors.grey.shade800,
+          thickness: 1,
+        ),
       ),
       bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
