@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:money_tracking_app/screens/login.dart';
 
 class Landing extends StatelessWidget {
@@ -13,17 +14,17 @@ class Landing extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50),
-            Text(
+            const SizedBox(height: 50),
+            const Text(
               'MoneyMap',
               style: TextStyle(
-                color: Colors.purple,
+                color: Colors.white,
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Easy method to manage your savings',
               style: TextStyle(
                 color: Colors.white,
@@ -31,11 +32,11 @@ class Landing extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(height: 30),
-            Row(
+            const SizedBox(height: 30),
+            const Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.check_circle, color: Colors.purple),
+                Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -48,11 +49,11 @@ class Landing extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 15),
-            Row(
+            const SizedBox(height: 15),
+            const Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.check_circle, color: Colors.purple),
+                Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -65,11 +66,11 @@ class Landing extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 15),
-            Row(
+            const SizedBox(height: 15),
+            const Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.check_circle, color: Colors.purple),
+                Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -82,33 +83,30 @@ class Landing extends StatelessWidget {
                 ),
               ],
             ),
-            Spacer(),
-            SizedBox(height: 20),
+            const Spacer(),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Login()),
-                  );
+                  Get.toNamed('/login');
                 },
-                child: Text(
+                child: const Text(
                   'Get Started',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
           ],
         ),
       ),
