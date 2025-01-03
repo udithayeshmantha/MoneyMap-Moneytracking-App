@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:money_tracking_app/router/router.dart';
 import 'package:flutter/services.dart';
-import 'package:money_tracking_app/screens/categories.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,8 +20,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      //home: Categories(),
-       initialRoute: '/Categories',
+
+      initialRoute: '/',
       getPages: RouterClass().routes,
       unknownRoute: GetPage(
         name: '/notfound',
