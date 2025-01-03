@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracking_app/components/bottom_nav_bar.dart';
 
 String greeting() {
   var hour = DateTime.now().hour;
@@ -194,30 +195,7 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xff211e25),
-        unselectedItemColor: Colors.white60,
-        selectedItemColor: Colors.white,
-        showUnselectedLabels: true,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: "Accounts",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            label: "Categories",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: "Settings",
-          ),
-        ],
-      ),
+      bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.purple,
         onPressed: () {
