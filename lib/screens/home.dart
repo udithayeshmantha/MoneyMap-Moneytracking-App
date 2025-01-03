@@ -197,7 +197,7 @@ class _HomeState extends State<Home> {
       ),
       bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.purple,
+        backgroundColor: Color(0xff4b3887),
         onPressed: () {
           // Add functionality here
         },

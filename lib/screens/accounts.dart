@@ -27,8 +27,9 @@ class AccountsScreen extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff4b3887),
         onPressed: () {},
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
