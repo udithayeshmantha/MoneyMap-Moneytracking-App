@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -73,7 +74,7 @@ class Login extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Action for the Next button
+                  Get.toNamed('/home');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
