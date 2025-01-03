@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracking_app/screens/Landing.dart';
 import 'package:flutter/services.dart';
+import 'package:money_tracking_app/screens/home.dart';
 import 'package:money_tracking_app/screens/login.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const Landing(),
+      home: const Home(),
     );
   }
 }
