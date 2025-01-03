@@ -21,17 +21,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home:  const SettingsScreen(),
-      //  initialRoute: '/',
-      // getPages: RouterClass().routes,
-      // unknownRoute: GetPage(
-      //   name: '/notfound',
-      //   page: () => const Scaffold(
-      //     body: Center(
-      //       child: Text('This Page Not Found!'),
-      //     ),
-      //   ),
-      // ),
+      initialRoute: '/',
+      getPages: RouterClass().routes,
+      unknownRoute: GetPage(
+        name: '/notfound',
+        page: () => const Scaffold(
+          body: Center(
+            child: Text('This Page Not Found!'),
+          ),
+        ),
+      ),
     );
   }
 }
