@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.black,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -42,12 +42,14 @@ class _HomeState extends State<Home> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text("Udith",
-            style: TextStyle(
+            Text(
+              "Udith",
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-              ),),
+              ),
+            ),
             const SizedBox(height: 16),
 
             // Balance Card
@@ -56,10 +58,13 @@ class _HomeState extends State<Home> {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-              colors: [Color(0xff2f6c66), Color(0xff429488)], // Gradient colors
-              begin: Alignment.topLeft, // Start point of the gradient
-              end: Alignment.bottomRight, // End point of the gradient
-            ),
+                  colors: [
+                    Color(0xff2f6c66),
+                    Color(0xff429488)
+                  ], // Gradient colors
+                  begin: Alignment.topLeft, // Start point of the gradient
+                  end: Alignment.bottomRight, // End point of the gradient
+                ),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
