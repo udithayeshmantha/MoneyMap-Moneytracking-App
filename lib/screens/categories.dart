@@ -75,7 +75,6 @@ class Categories extends StatelessWidget {
                 color: Colors.deepPurple,
               ),
             ),
-            
             title: Text(
               category['name'] as String,
               style: const TextStyle(color: Colors.white, fontSize: 18),
@@ -98,12 +97,114 @@ class Categories extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Handle floating button press
-        },
-        backgroundColor: Color(0xff4b3887),
-        child: const Icon(Icons.add, color: Colors.white),
+        onPressed: () => _showAddAccountDialog(context),
+        backgroundColor: Colors.purple,
+        child: Icon(Icons.add),
       ),
     );
   }
+}
+
+void _showAddAccountDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        backgroundColor: Colors.grey[900],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                textAlign: TextAlign.left,
+                "New Category",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Name",
+                  labelStyle: TextStyle(color: Colors.white70),
+                  filled: true,
+                  fillColor: Colors.grey[800],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 16),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Rs Budget",
+                  labelStyle: TextStyle(color: Colors.white70),
+                  filled: true,
+                  fillColor: Colors.grey[800],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                style: TextStyle(color: Colors.white),
+                keyboardType: TextInputType.number,
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(
+                  5,
+                  (index) => CircleAvatar(
+                    backgroundColor: Colors.primaries[index],
+                    radius: 16,
+                    child: index == 1
+                        ? Icon(Icons.check, color: Colors.white, size: 16)
+                        : null,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(
+                  5,
+                  (index) => Icon(
+                    Icons.category,
+                    color: Colors.white70,
+                    size: 28,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  // Handle save action
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  child: Text("Save"),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

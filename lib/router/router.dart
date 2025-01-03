@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:money_tracking_app/components/new_trannsaction.dart';
 import 'package:money_tracking_app/screens/Landing.dart';
 import 'package:money_tracking_app/screens/accounts.dart';
 import 'package:money_tracking_app/screens/categories.dart';
@@ -32,5 +33,6 @@ class RouterClass {
       name: '/settings',
       page: () => SettingsScreen(),
     ),
+    GetPage(name: '/newTransactionScreen', page: () => NewTransactionScreen())
   ];
 }

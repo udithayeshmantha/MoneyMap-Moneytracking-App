@@ -14,10 +14,10 @@ class AccountsScreen extends StatelessWidget {
         title: const Text(
           'Accounts',
           style: TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: false,
       ),
@@ -32,8 +32,8 @@ class AccountsScreen extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff4b3887),
         onPressed: () {},
+        backgroundColor: Color(0xff4b3887),
         child: Icon(Icons.add, color: Colors.white),
       ),
     );
