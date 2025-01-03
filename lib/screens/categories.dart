@@ -9,30 +9,60 @@ class Categories extends StatelessWidget {
     // List of categories
     final categories = [
       {"icon": Icons.home, "name": "Housing", "budget": "No budget"},
-      {"icon": Icons.directions_car, "name": "Transportation", "budget": "No budget"},
+      {
+        "icon": Icons.directions_car,
+        "name": "Transportation",
+        "budget": "No budget"
+      },
       {"icon": Icons.restaurant, "name": "Food", "budget": "No budget"},
       {"icon": Icons.flash_on, "name": "Utilities", "budget": "No budget"},
-      {"icon": Icons.health_and_safety, "name": "Insurance", "budget": "No budget"},
-      {"icon": Icons.medical_services, "name": "Medical & Healthcare", "budget": "No budget"},
-      {"icon": Icons.savings, "name": "Saving, Investing, & Debt Payments", "budget": "No budget"},
-      {"icon": Icons.shopping_cart, "name": "Personal Spending", "budget": "No budget"},
-      {"icon": Icons.tv, "name": "Recreation & Entertainment", "budget": "No budget"},
+      {
+        "icon": Icons.health_and_safety,
+        "name": "Insurance",
+        "budget": "No budget"
+      },
+      {
+        "icon": Icons.medical_services,
+        "name": "Medical & Healthcare",
+        "budget": "No budget"
+      },
+      {
+        "icon": Icons.savings,
+        "name": "Saving, Investing, & Debt Payments",
+        "budget": "No budget"
+      },
+      {
+        "icon": Icons.shopping_cart,
+        "name": "Personal Spending",
+        "budget": "No budget"
+      },
+      {
+        "icon": Icons.tv,
+        "name": "Recreation & Entertainment",
+        "budget": "No budget"
+      },
     ];
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       appBar: AppBar(
+        toolbarHeight: 75,
+
+        automaticallyImplyLeading: false, // Remove the back button
         backgroundColor: Colors.transparent,
+        // Change the background color
         elevation: 0,
         title: const Align(
           alignment: Alignment.centerLeft,
           child: Text(
-          "Categories",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
+            "Categories",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),),
+        ),
         centerTitle: true,
       ),
       body: ListView.builder(
@@ -70,7 +100,6 @@ class Categories extends StatelessWidget {
         backgroundColor: Color(0xff4b3887),
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      backgroundColor: Colors.black,
     );
   }
 }

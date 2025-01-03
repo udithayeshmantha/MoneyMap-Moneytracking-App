@@ -10,37 +10,32 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => NavigationBarTheme(
-          data: NavigationBarThemeData(
-            indicatorColor: Colors.transparent,
-            labelTextStyle: MaterialStateProperty.all(
-              TextStyle(
-                color: Colors.white, // Change this to your desired text color
-              ),
-            ),
-          ),
-          child: NavigationBar(
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-            surfaceTintColor: Colors.transparent,
-            backgroundColor: Colors.transparent,
-            selectedIndex:
+    return Obx(() => SizedBox(
+          height: 70,
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: const Color.fromARGB(255, 54, 54, 54),
+            elevation: 0,
+            unselectedItemColor: Colors.grey,
+            selectedItemColor: Colors.white,
+            showUnselectedLabels: true,
+            currentIndex:
                 controller.selectedIndex.value, // Observe selectedIndex
-            onDestinationSelected: (index) =>
-                controller.navigateTo(index), // Navigate on tap
-            destinations: const [
-              NavigationDestination(
+            onTap: (index) => controller.navigateTo(index), // Navigate on tap
+            items: const [
+              BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: "Home",
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.account_balance_wallet),
                 label: "Accounts",
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.category),
                 label: "Categories",
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
                 label: "Settings",
               ),
