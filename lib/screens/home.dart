@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.black,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -38,60 +38,76 @@ class _HomeState extends State<Home> {
               "Hi! Good ${greeting()}",
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text("Udith",
-            style: TextStyle(
+            Text(
+              "Udith",
+              style: TextStyle(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
-              ),),
+              ),
+            ),
             const SizedBox(height: 16),
 
             // Balance Card
             Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              width: double.infinity, // Adjust width as needed
+              height: 200, // Adjust height as needed
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-              colors: [Color(0xff2f6c66), Color(0xff429488)], // Gradient colors
-              begin: Alignment.topLeft, // Start point of the gradient
-              end: Alignment.bottomRight, // End point of the gradient
-            ),
-                borderRadius: BorderRadius.circular(12),
+                color: Colors.teal, // Background color of the card
+                borderRadius: BorderRadius.circular(20), // Rounded corners
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "Rs0",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0), // Padding inside the card
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Rs0',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Balance',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 5),
-                  Text(
-                    "Balance",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Cash',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Icon(
+                          Icons.credit_card, // Use desired icon
+                          color: Colors.white70,
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    "Cash",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
+
             const SizedBox(height: 16),
 
             // Payments Section
@@ -107,6 +123,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 DropdownButton<String>(
+                  underline: Container(),
                   dropdownColor: Colors.black,
                   value: "01 Dec - 30 Dec",
                   items: ["01 Dec - 30 Dec", "01 Jan - 31 Jan"]
@@ -122,7 +139,6 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
-            const SizedBox(height: 8),
 
             // Income & Expense Cards
             Row(
@@ -132,10 +148,11 @@ class _HomeState extends State<Home> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.green.shade900,
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
                           "Income",
@@ -145,7 +162,7 @@ class _HomeState extends State<Home> {
                         Text(
                           "Rs0",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.green,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -159,10 +176,11 @@ class _HomeState extends State<Home> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(12),
+                      color: const Color.fromARGB(255, 107, 29, 24),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
                           "Expense",
@@ -172,7 +190,7 @@ class _HomeState extends State<Home> {
                         Text(
                           "Rs0",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.red,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -183,8 +201,7 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            const Spacer(),
-
+            SizedBox(height: 20),
             // No Payments Message
             const Center(
               child: Text(

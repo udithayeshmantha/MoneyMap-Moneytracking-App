@@ -15,5 +15,6 @@ class RouterClass {
     GetPage( name: '/categories',page: () =>  Categories(),),
     GetPage( name: '/settings',page: () =>  SettingsScreen(),),
     
+
   ];
 }
