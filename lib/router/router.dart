@@ -29,10 +29,7 @@ class RouterClass {
       name: '/categories',
       page: () => Categories(),
     ),
-    GetPage(
-      name: '/settings',
-      page: () => SettingsScreen(),
-    ),
+    GetPage(name: '/settings', page: () => SettingsScreen()),
     GetPage(name: '/newTransactionScreen', page: () => NewTransactionScreen())
   ];
 }
