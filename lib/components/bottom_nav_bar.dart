@@ -30,15 +30,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Container(
-        color: Colors.black,
+        color: Color.fromARGB(255, 54, 54, 54),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
           child: GNav(
-            backgroundColor: Colors.black,
-            color: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 54, 54, 54),
+            color: Colors.grey,
             activeColor: Colors.white,
             padding: const EdgeInsets.all(16),
-            tabBackgroundColor: const Color.fromARGB(255, 29, 29, 29),
+            tabBackgroundColor: Colors.transparent,
             gap: 8,
             selectedIndex: _selectedIndex,
             onTabChange: (index) {
@@ -48,20 +48,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
             },
             tabs: const [
               GButton(
-                icon: Icons.home_outlined,
+                icon: Icons.home,
                 text: 'Home',
               ),
               GButton(
-                icon: Icons.notifications_none_outlined,
-                text: 'Notifications',
+                icon: Icons.wallet_outlined,
+                text: 'Accounts',
               ),
               GButton(
-                icon: Icons.favorite_outline_rounded,
-                text: 'Favorites',
+                icon: Icons.category_rounded,
+                text: 'Categories',
               ),
               GButton(
-                icon: Icons.person_2_outlined,
-                text: 'Profile',
+                icon: Icons.settings_outlined,
+                text: 'Settings',
               ),
             ],
           ),
