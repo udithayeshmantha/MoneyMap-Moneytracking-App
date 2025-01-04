@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "741726649881",
+    "project_id": "money-mapping-backend",
+    "storage_bucket": "money-mapping-backend.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741726649881:android:a41ee66500e7274b6cf488",
+        "android_client_info": {
+          "package_name": "com.example.money_tracking_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKQzbQeSVjsUQX_DrQ8sAFrxDuRuEXee0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
