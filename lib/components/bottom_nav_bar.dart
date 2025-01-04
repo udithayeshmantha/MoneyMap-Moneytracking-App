@@ -1,46 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:money_tracking_app/controller/bottom_nav_bar_controller.dart';
+import 'package:money_tracking_app/screens/accounts.dart';
+import 'package:money_tracking_app/screens/categories.dart';
+import 'package:money_tracking_app/screens/home.dart';
+import 'package:money_tracking_app/screens/settings_screen.dart';
 
-class BottomNavBar extends StatelessWidget {
-  BottomNavBar({Key? key}) : super(key: key);
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({Key? key}) : super(key: key);
 
-  // Initialize the controller
-  final BottomNavController controller = Get.put(BottomNavController());
+  @override
+  _BottomNavBarState createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  int _selectedIndex = 0;
+  static final List<Widget> _widgetOptions = <Widget>[
+    Home(),
+    AccountsScreen(),
+    Categories(),
+    SettingsScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => SizedBox(
-          height: 70,
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: const Color.fromARGB(255, 54, 54, 54),
-            elevation: 0,
-            unselectedItemColor: Colors.grey,
-            selectedItemColor: Colors.white,
-            showUnselectedLabels: true,
-            currentIndex:
-                controller.selectedIndex.value, // Observe selectedIndex
-            onTap: (index) => controller.navigateTo(index), // Navigate on tap
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home",
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+          child: GNav(
+            backgroundColor: Colors.black,
+            color: Colors.white,
+            activeColor: Colors.white,
+            padding: const EdgeInsets.all(16),
+            tabBackgroundColor: const Color.fromARGB(255, 29, 29, 29),
+            gap: 8,
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            tabs: const [
+              GButton(
+                icon: Icons.home_outlined,
+                text: 'Home',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_balance_wallet),
-                label: "Accounts",
+              GButton(
+                icon: Icons.notifications_none_outlined,
+                text: 'Notifications',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.category),
-                label: "Categories",
+              GButton(
+                icon: Icons.favorite_outline_rounded,
+                text: 'Favorites',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: "Settings",
+              GButton(
+                icon: Icons.person_2_outlined,
+                text: 'Profile',
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

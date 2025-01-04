@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:money_tracking_app/components/bottom_nav_bar.dart';
+import 'package:money_tracking_app/models/userdetails.dart';
 
 String greeting() {
   var hour = DateTime.now().hour;
@@ -13,16 +14,13 @@ String greeting() {
   return 'Evening';
 }
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
   Widget build(BuildContext context) {
+    final UserDetails userDetails = Get.arguments as UserDetails;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       appBar: AppBar(
@@ -44,7 +42,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             Text(
-              "Udith",
+              userDetails.name,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 25,
@@ -213,14 +211,11 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff4b3887),
-
         onPressed: () {
           Get.toNamed("/newTransactionScreen");
         },
-
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );

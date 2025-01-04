@@ -95,7 +95,6 @@ class Categories extends StatelessWidget {
           thickness: 1,
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddCategoryDialog(context),
         backgroundColor: Color(0xff4b3887),
