@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:money_tracking_app/components/bottom_nav_bar.dart';
 
 String greeting() {
@@ -217,7 +216,7 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff4b3887),
         onPressed: () {
-          Get.toNamed('/newTransactionScreen');
+          // Add functionality here
         },
         child: const Icon(Icons.add, color: Colors.white),
       ),
