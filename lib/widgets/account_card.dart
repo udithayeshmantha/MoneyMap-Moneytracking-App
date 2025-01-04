@@ -53,7 +53,10 @@ class AccountCard extends StatelessWidget {
                       child: Text(
                         choice,
                         style: TextStyle(
-                            color: Colors.white), // Change text color here
+                          color: choice == 'Delete'
+                              ? Colors.red
+                              : Colors.white, // Change text color here
+                        ),
                       ),
                     );
                   }).toList();
@@ -79,15 +82,45 @@ class AccountCard extends StatelessWidget {
           SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(
-                'Income\nRs${income.toStringAsFixed(2)}',
-                style: TextStyle(color: Colors.green, fontSize: 16),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Income\n',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                    TextSpan(
+                      text: 'Rs${income.toStringAsFixed(2)}',
+                      style: TextStyle(color: Colors.green, fontSize: 16),
+                    ),
+                  ],
+                ),
               ),
-              Text(
-                'Expense\nRs${expense.toStringAsFixed(2)}',
-                style: TextStyle(color: Colors.red, fontSize: 16),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Expense\n',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                    TextSpan(
+                      text: 'Rs${expense.toStringAsFixed(2)}',
+                      style: TextStyle(color: Colors.red, fontSize: 16),
+                    ),
+                  ],
+                ),
               ),
+              Column(
+                children: [
+                  Icon(
+                    Icons.wallet,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ],
+              )
             ],
           ),
         ],
