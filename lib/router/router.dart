@@ -32,5 +32,7 @@ class RouterClass {
       name: '/settings',
       page: () => SettingsScreen(),
     ),
+
+    GetPage(name: '/newTransactionScreen', page: () => NewTransactionScreen()),
   ];
 }
