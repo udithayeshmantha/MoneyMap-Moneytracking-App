@@ -18,16 +18,11 @@ class Login extends StatelessWidget {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-<<<<<<< HEAD
-        final userDetails = UserDetails(
-          name: nameController.text,
-          id: '',
-          email: emailController.text.trim(),
-        );
-=======
-        final userDetails =
-            UserDetails(name: userCredential.user?.displayName ?? 'User');
->>>>>>> 62096b4e8d12b91238cb3a73a3d4e15dc9c8c533
+final userDetails = UserDetails(
+  name: userCredential.user?.displayName ?? 'User',
+  id: userCredential.user?.uid ?? '',
+  email: emailController.text.trim(),
+);
         Get.toNamed('/bottomnavbar', arguments: userDetails);
       } on FirebaseAuthException catch (e) {
         String message;
