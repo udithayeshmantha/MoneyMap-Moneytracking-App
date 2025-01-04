@@ -172,6 +172,10 @@ class _CategoriesState extends State<Categories> {
   }
 }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 62096b4e8d12b91238cb3a73a3d4e15dc9c8c533
 class AddCategoryDialog extends StatefulWidget {
   final Function(Map<String, Object>) onSave;
 
