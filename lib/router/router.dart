@@ -30,7 +30,6 @@ class RouterClass {
       page: () => Categories(),
     ),
     GetPage(name: '/settings', page: () => SettingsScreen()),
-
     GetPage(name: '/newTransactionScreen', page: () => NewTransactionScreen()),
   ];
 }

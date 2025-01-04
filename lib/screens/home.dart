@@ -27,7 +27,7 @@ class _HomeState extends State<Home> {
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       appBar: AppBar(
         toolbarHeight: 0, // No app bar, similar to the UI
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
@@ -216,9 +216,11 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff4b3887),
+
         onPressed: () {
           Get.toNamed("/newTransactionScreen");
         },
+
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
