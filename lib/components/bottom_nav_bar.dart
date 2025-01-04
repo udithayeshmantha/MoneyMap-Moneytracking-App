@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:money_tracking_app/controller/bottom_nav_bar_controller.dart';
+import 'package:money_tracking_app/services/auth_service.dart';
+import 'package:money_tracking_app/services/auth_service.dart';
 import 'package:money_tracking_app/screens/accounts.dart';
 import 'package:money_tracking_app/screens/categories.dart';
 import 'package:money_tracking_app/screens/home.dart';
@@ -25,45 +26,51 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: Container(
-        color: Color.fromARGB(255, 54, 54, 54),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-          child: GNav(
-            backgroundColor: const Color.fromARGB(255, 54, 54, 54),
-            color: Colors.grey,
-            activeColor: Colors.white,
-            padding: const EdgeInsets.all(16),
-            tabBackgroundColor: Colors.transparent,
-            gap: 8,
-            selectedIndex: _selectedIndex,
-            onTabChange: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            tabs: const [
-              GButton(
-                icon: Icons.home,
-                text: 'Home',
-              ),
-              GButton(
-                icon: Icons.wallet_outlined,
-                text: 'Accounts',
-              ),
-              GButton(
-                icon: Icons.category_rounded,
-                text: 'Categories',
-              ),
-              GButton(
-                icon: Icons.settings_outlined,
-                text: 'Settings',
-              ),
-            ],
+    return GestureDetector(
+      onTap: AuthService.to.resetInactivityTimer,
+      onPanDown: (_) => AuthService.to.resetInactivityTimer(),
+      child: Scaffold(
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.black,
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+            child: GNav(
+              backgroundColor: Colors.black,
+              color: Colors.white,
+              activeColor: Colors.white,
+              padding: const EdgeInsets.all(16),
+              tabBackgroundColor: const Color.fromARGB(255, 29, 29, 29),
+              gap: 8,
+              selectedIndex: _selectedIndex,
+              onTabChange: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+                AuthService.to.resetInactivityTimer();
+              },
+              tabs: const [
+                GButton(
+                  icon: Icons.home_outlined,
+                  text: 'Home',
+                ),
+                GButton(
+                  icon: Icons.account_balance_wallet_outlined,
+                  text: 'Accounts',
+                ),
+                GButton(
+                  icon: Icons.category_outlined,
+                  text: 'Categories',
+                ),
+                GButton(
+                  icon: Icons.settings_outlined,
+                  text: 'Settings',
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -11,15 +11,60 @@ class Categories extends StatefulWidget {
 
 class _CategoriesState extends State<Categories> {
   final List<Map<String, Object>> categories = [
-    {"icon": Icons.home, "name": "Housing", "budget": "No budget", "color": Colors.blue},
-    {"icon": Icons.directions_car, "name": "Transportation", "budget": "No budget", "color": Colors.green},
-    {"icon": Icons.restaurant, "name": "Food", "budget": "No budget", "color": Colors.red},
-    {"icon": Icons.flash_on, "name": "Utilities", "budget": "No budget", "color": Colors.yellow},
-    {"icon": Icons.health_and_safety, "name": "Insurance", "budget": "No budget", "color": Colors.purple},
-    {"icon": Icons.medical_services, "name": "Medical & Healthcare", "budget": "No budget", "color": Colors.orange},
-    {"icon": Icons.savings, "name": "Saving, Investing, & Debt Payments", "budget": "No budget", "color": Colors.pink},
-    {"icon": Icons.shopping_cart, "name": "Personal Spending", "budget": "No budget", "color": Colors.brown},
-    {"icon": Icons.tv, "name": "Recreation & Entertainment", "budget": "No budget", "color": Colors.cyan},
+    {
+      "icon": Icons.home,
+      "name": "Housing",
+      "budget": "No budget",
+      "color": Colors.blue
+    },
+    {
+      "icon": Icons.directions_car,
+      "name": "Transportation",
+      "budget": "No budget",
+      "color": Colors.green
+    },
+    {
+      "icon": Icons.restaurant,
+      "name": "Food",
+      "budget": "No budget",
+      "color": Colors.red
+    },
+    {
+      "icon": Icons.flash_on,
+      "name": "Utilities",
+      "budget": "No budget",
+      "color": Colors.yellow
+    },
+    {
+      "icon": Icons.health_and_safety,
+      "name": "Insurance",
+      "budget": "No budget",
+      "color": Colors.purple
+    },
+    {
+      "icon": Icons.medical_services,
+      "name": "Medical & Healthcare",
+      "budget": "No budget",
+      "color": Colors.orange
+    },
+    {
+      "icon": Icons.savings,
+      "name": "Saving, Investing, & Debt Payments",
+      "budget": "No budget",
+      "color": Colors.pink
+    },
+    {
+      "icon": Icons.shopping_cart,
+      "name": "Personal Spending",
+      "budget": "No budget",
+      "color": Colors.brown
+    },
+    {
+      "icon": Icons.tv,
+      "name": "Recreation & Entertainment",
+      "budget": "No budget",
+      "color": Colors.cyan
+    },
   ];
 
   @override
@@ -95,8 +140,8 @@ class _CategoriesState extends State<Categories> {
     );
   }
 
-
-  void _showEditCategoryDialog(BuildContext context, Map<String, Object> category, Function(Map<String, dynamic>) onSave) {
+  void _showEditCategoryDialog(BuildContext context,
+      Map<String, Object> category, Function(Map<String, dynamic>) onSave) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -111,7 +156,6 @@ class _CategoriesState extends State<Categories> {
     );
   }
 
-
   void _showAddCategoryDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -122,23 +166,11 @@ class _CategoriesState extends State<Categories> {
               categories.add(newCategory);
             });
           },
-
         );
       },
     );
   }
 }
-
- void _showAddCategoryDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AddCategoryDialog();
-      },
-    );
-  }
-
-
 
 class AddCategoryDialog extends StatefulWidget {
   final Function(Map<String, Object>) onSave;

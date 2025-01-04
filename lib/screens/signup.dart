@@ -3,30 +3,30 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:money_tracking_app/models/userdetails.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Signup extends StatelessWidget {
+  const Signup({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController nameController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
-    Future<void> _login() async {
+    Future<void> _register() async {
       try {
         UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        final userDetails =
-            UserDetails(name: userCredential.user?.displayName ?? 'User');
+        final userDetails = UserDetails(name: nameController.text);
         Get.toNamed('/bottomnavbar', arguments: userDetails);
       } on FirebaseAuthException catch (e) {
         String message;
-        if (e.code == 'user-not-found') {
-          message = 'No user found for that email.';
-        } else if (e.code == 'wrong-password') {
-          message = 'Wrong password provided.';
+        if (e.code == 'weak-password') {
+          message = 'The password provided is too weak.';
+        } else if (e.code == 'email-already-in-use') {
+          message = 'The account already exists for that email.';
         } else {
           message = 'An error occurred: ${e.message}';
         }
@@ -73,9 +73,16 @@ class Login extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             const Text(
-              'Please log in to continue',
+              'What should we call you?',
               style: TextStyle(color: Colors.white70, fontSize: 16.0),
               textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20.0),
+            TextField(
+              controller: nameController,
+              decoration: _inputDecoration('Name', Icons.person),
+              style: const TextStyle(color: Colors.white),
+              cursorColor: Colors.white,
             ),
             const SizedBox(height: 20.0),
             TextField(
@@ -98,7 +105,8 @@ class Login extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  if (emailController.text.isEmpty ||
+                  if (nameController.text.isEmpty ||
+                      emailController.text.isEmpty ||
                       passwordController.text.isEmpty) {
                     Get.snackbar(
                       'Error',
@@ -108,7 +116,7 @@ class Login extends StatelessWidget {
                       colorText: Colors.white,
                     );
                   } else {
-                    _login();
+                    _register();
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -121,7 +129,7 @@ class Login extends StatelessWidget {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Login',
+                    Text('Next',
                         style: TextStyle(fontSize: 18.0, color: Colors.black)),
                     SizedBox(width: 10.0),
                     Icon(Icons.arrow_forward, color: Colors.black),
