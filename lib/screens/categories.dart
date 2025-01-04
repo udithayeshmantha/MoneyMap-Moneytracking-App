@@ -95,6 +95,7 @@ class _CategoriesState extends State<Categories> {
     );
   }
 
+
   void _showEditCategoryDialog(BuildContext context, Map<String, Object> category, Function(Map<String, dynamic>) onSave) {
     showDialog(
       context: context,
@@ -121,11 +122,23 @@ class _CategoriesState extends State<Categories> {
               categories.add(newCategory);
             });
           },
+
         );
       },
     );
   }
 }
+
+ void _showAddCategoryDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddCategoryDialog();
+      },
+    );
+  }
+
+
 
 class AddCategoryDialog extends StatefulWidget {
   final Function(Map<String, Object>) onSave;
