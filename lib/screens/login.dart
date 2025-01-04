@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:money_tracking_app/models/userdetails.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController nameController = TextEditingController();
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       body: Padding(
@@ -44,6 +47,7 @@ class Login extends StatelessWidget {
             const SizedBox(height: 20.0),
             // Material UI Styled Text Field
             TextField(
+              controller: nameController,
               decoration: InputDecoration(
                 labelText: 'Name',
                 labelStyle: const TextStyle(color: Colors.white),
@@ -74,7 +78,8 @@ class Login extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Get.toNamed('/home');
+                  final userDetails = UserDetails(name: nameController.text);
+                  Get.toNamed('/bottomnavbar', arguments: userDetails);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,

@@ -84,7 +84,6 @@ class _CategoriesState extends State<Categories> {
           thickness: 1,
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddCategoryDialog(context),
         backgroundColor: const Color(0xff4b3887),

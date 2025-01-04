@@ -7,52 +7,52 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 20, 17, 24),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text(
-            "Settings",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+      backgroundColor: const Color.fromARGB(255, 20, 17, 24),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text(
+          "Settings",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
-          centerTitle: false,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          toolbarHeight: 75,
         ),
-        body: ListView(
-          padding: const EdgeInsets.all(16.0),
-          children: [
-            _buildSettingItem(
-              icon: Icons.person,
-              iconColor: Colors.purple,
-              title: "Name",
-              subtitle: "Udith",
-            ),
-            _buildSettingItem(
-              icon: Icons.currency_rupee,
-              iconColor: Colors.purple,
-              title: "Currency",
-              subtitle: "Sri Lanka Rupee",
-            ),
-            _buildSettingItem(
-              icon: Icons.download,
-              iconColor: Colors.purple,
-              title: "Export",
-              subtitle: "Export to file",
-            ),
-            _buildSettingItem(
-              icon: Icons.upload,
-              iconColor: Colors.purple,
-              title: "Import",
-              subtitle: "Import from backup file",
-            ),
-          ],
-        ),
-        bottomNavigationBar: BottomNavBar());
+        centerTitle: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 75,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          _buildSettingItem(
+            icon: Icons.person,
+            iconColor: Colors.purple,
+            title: "Name",
+            subtitle: "Udith",
+          ),
+          _buildSettingItem(
+            icon: Icons.currency_rupee,
+            iconColor: Colors.purple,
+            title: "Currency",
+            subtitle: "Sri Lanka Rupee",
+          ),
+          _buildSettingItem(
+            icon: Icons.download,
+            iconColor: Colors.purple,
+            title: "Export",
+            subtitle: "Export to file",
+          ),
+          _buildSettingItem(
+            icon: Icons.upload,
+            iconColor: Colors.purple,
+            title: "Import",
+            subtitle: "Import from backup file",
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildSettingItem({
