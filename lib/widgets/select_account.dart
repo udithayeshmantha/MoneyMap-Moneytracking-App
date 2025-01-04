@@ -20,7 +20,7 @@ class _SelectAccountState extends State<SelectAccount> {
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold),
-              ),
+              )
         ),
                     SizedBox(height: 10),
                     Row(

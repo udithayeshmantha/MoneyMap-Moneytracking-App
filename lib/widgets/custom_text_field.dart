@@ -21,6 +21,6 @@ Widget CustomTextField(String label, String hintText,
           borderRadius: BorderRadius.circular(15),
           borderSide: const BorderSide(color: Color(0xffcdbdfb)),
         ),
-      ),
+      )
     );
   }

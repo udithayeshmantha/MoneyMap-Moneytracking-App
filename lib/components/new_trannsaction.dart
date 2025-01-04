@@ -16,7 +16,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
   TimeOfDay selectedTime = TimeOfDay.now(); // Selected Time
   String? selectedCategory; // Currently selected category
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +64,8 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                                 color: isIncome
                                     ? const Color(0xffcdbdfb)
                                     : Colors.transparent,
-                                border: Border.all(color: const Color(0xffcdbdfb)),
+                                border:
+                                    Border.all(color: const Color(0xffcdbdfb)),
                               ),
                               child: const Text(
                                 "Income",
@@ -91,7 +91,8 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                                 color: !isIncome
                                     ? const Color(0xffcdbdfb)
                                     : Colors.transparent,
-                                border: Border.all(color: const Color(0xffcdbdfb)),
+                                border:
+                                    Border.all(color: const Color(0xffcdbdfb)),
                               ),
                               child: const Text(
                                 "Expense",
@@ -103,22 +104,21 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
-            
+
                     // Title TextField
                     CustomTextField("Title", "Enter transaction title"),
                     const SizedBox(height: 20),
-            
+
                     // Description TextField
-                    CustomTextField("Description", "Enter transaction description"),
+                    CustomTextField(
+                        "Description", "Enter transaction description"),
                     const SizedBox(height: 20),
-            
+
                     // Amount TextField
                     CustomTextField("Rs 0.0", "Enter amount",
                         keyboardType: TextInputType.number),
                     const SizedBox(height: 20),
-            
-                    
-            
+
                     // Date and Time Row
                     Row(
                       children: [
@@ -137,28 +137,27 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                                 });
                               }
                             },
-                            child: _dateOrTimeContainer(
-                                "Date", "${selectedDate.toLocal()}".split(' ')[0]),
+                            child: _dateOrTimeContainer("Date",
+                                "${selectedDate.toLocal()}".split(' ')[0]),
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: GestureDetector(
-                            onTap: () async {
-                              TimeOfDay? pickedTime = await showTimePicker(
-                                context: context,
-                                initialTime: selectedTime,
-                              );
-                              if (pickedTime != null) {
-                                setState(() {
-                                  selectedTime = pickedTime;
-                                });
-                              }
-                            },
-                            child: _dateOrTimeContainer(
-                                "Time", selectedTime.format(context)),
-                          ),
-                        ),
+                            child: GestureDetector(
+                          onTap: () async {
+                            TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: selectedTime,
+                            );
+                            if (pickedTime != null) {
+                              setState(() {
+                                selectedTime = pickedTime;
+                              });
+                            }
+                          },
+                          child: _dateOrTimeContainer(
+                              "Time", selectedTime.format(context)),
+                        )),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -168,8 +167,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                     // Select Category Section
                     SelectCategory(),
                     const SizedBox(height: 20),
-            
-                    
                   ],
                 ),
               ),
@@ -177,41 +174,40 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
           ),
 
           // Save Button
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: SizedBox(
-                       width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Save transaction logic here
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[800],
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            ),
-                        ),
-                        child: const Text(
-                          "Save Transaction",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                    ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Save transaction logic here
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey[800],
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
-                  SizedBox(height: 15,)
+                ),
+                child: const Text(
+                  "Save Transaction",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          )
         ],
       ),
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
     );
   }
 
-
-
   Widget _dateOrTimeContainer(String label, String value) {
     return Container(
       padding: const EdgeInsets.all(12),
-      
       child: Row(
         children: [
           Icon(label == "Date" ? Icons.calendar_today : Icons.access_time,
@@ -221,4 +217,5 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
         ],
       ),
     );
-  }}
+  }
+}
