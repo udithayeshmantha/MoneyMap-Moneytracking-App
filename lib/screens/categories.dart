@@ -96,7 +96,6 @@ class _CategoriesState extends State<Categories> {
     );
   }
 
-
   void _showEditCategoryDialog(BuildContext context, Map<String, Object> category, Function(Map<String, dynamic>) onSave) {
     showDialog(
       context: context,
@@ -111,25 +110,36 @@ class _CategoriesState extends State<Categories> {
       },
     );
   }
-}
 
- void _showAddCategoryDialog(BuildContext context) {
+
+  void _showAddCategoryDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AddCategoryDialog();
+        return AddCategoryDialog(
+          onSave: (newCategory) {
+            setState(() {
+              categories.add(newCategory);
+            });
+          },
+        );
       },
     );
   }
-
-
+}
 
 class AddCategoryDialog extends StatefulWidget {
+  final Function(Map<String, Object>) onSave;
+
+  const AddCategoryDialog({Key? key, required this.onSave}) : super(key: key);
+
   @override
   _AddCategoryDialogState createState() => _AddCategoryDialogState();
 }
 
 class _AddCategoryDialogState extends State<AddCategoryDialog> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _budgetController = TextEditingController();
   Color selectedColor = Colors.primaries[0];
   IconData selectedIcon = Icons.category;
 
@@ -160,6 +170,7 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
                 SizedBox(width: 8),
                 Expanded(
                   child: TextField(
+                    controller: _nameController,
                     decoration: InputDecoration(
                       labelText: "Name",
                       labelStyle: TextStyle(color: Colors.white70),
@@ -177,6 +188,7 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
             ),
             SizedBox(height: 16),
             TextField(
+              controller: _budgetController,
               decoration: InputDecoration(
                 labelText: "Budget",
                 labelStyle: TextStyle(color: Colors.white70),
@@ -257,8 +269,18 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Handle save action
-                Navigator.pop(context);
+                if (_nameController.text.isNotEmpty) {
+                  final newCategory = {
+                    "icon": selectedIcon,
+                    "name": _nameController.text,
+                    "budget": _budgetController.text.isNotEmpty
+                        ? _budgetController.text
+                        : "No budget",
+                    "color": selectedColor,
+                  };
+                  widget.onSave(newCategory);
+                  Navigator.pop(context);
+                }
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
