@@ -129,16 +129,6 @@ class _CategoriesState extends State<Categories> {
   }
 }
 
- void _showAddCategoryDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AddCategoryDialog();
-      },
-    );
-  }
-
-
 
 class AddCategoryDialog extends StatefulWidget {
   final Function(Map<String, Object>) onSave;
