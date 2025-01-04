@@ -1,48 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracking_app/components/bottom_nav_bar.dart';
+import 'package:money_tracking_app/widgets/edit_category_dialog.dart';
 
-class Categories extends StatelessWidget {
+class Categories extends StatefulWidget {
   const Categories({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // List of categories
-    final categories = [
-      {"icon": Icons.home, "name": "Housing", "budget": "No budget"},
-      {
-        "icon": Icons.directions_car,
-        "name": "Transportation",
-        "budget": "No budget"
-      },
-      {"icon": Icons.restaurant, "name": "Food", "budget": "No budget"},
-      {"icon": Icons.flash_on, "name": "Utilities", "budget": "No budget"},
-      {
-        "icon": Icons.health_and_safety,
-        "name": "Insurance",
-        "budget": "No budget"
-      },
-      {
-        "icon": Icons.medical_services,
-        "name": "Medical & Healthcare",
-        "budget": "No budget"
-      },
-      {
-        "icon": Icons.savings,
-        "name": "Saving, Investing, & Debt Payments",
-        "budget": "No budget"
-      },
-      {
-        "icon": Icons.shopping_cart,
-        "name": "Personal Spending",
-        "budget": "No budget"
-      },
-      {
-        "icon": Icons.tv,
-        "name": "Recreation & Entertainment",
-        "budget": "No budget"
-      },
-    ];
+  _CategoriesState createState() => _CategoriesState();
+}
 
+class _CategoriesState extends State<Categories> {
+  final List<Map<String, Object>> categories = [
+    {"icon": Icons.home, "name": "Housing", "budget": "No budget", "color": Colors.blue},
+    {"icon": Icons.directions_car, "name": "Transportation", "budget": "No budget", "color": Colors.green},
+    {"icon": Icons.restaurant, "name": "Food", "budget": "No budget", "color": Colors.red},
+    {"icon": Icons.flash_on, "name": "Utilities", "budget": "No budget", "color": Colors.yellow},
+    {"icon": Icons.health_and_safety, "name": "Insurance", "budget": "No budget", "color": Colors.purple},
+    {"icon": Icons.medical_services, "name": "Medical & Healthcare", "budget": "No budget", "color": Colors.orange},
+    {"icon": Icons.savings, "name": "Saving, Investing, & Debt Payments", "budget": "No budget", "color": Colors.pink},
+    {"icon": Icons.shopping_cart, "name": "Personal Spending", "budget": "No budget", "color": Colors.brown},
+    {"icon": Icons.tv, "name": "Recreation & Entertainment", "budget": "No budget", "color": Colors.cyan},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       appBar: AppBar(
@@ -69,10 +50,10 @@ class Categories extends StatelessWidget {
           final category = categories[index];
           return ListTile(
             leading: CircleAvatar(
-              backgroundColor: Colors.deepPurple.shade100,
+              backgroundColor: (category['color'] as Color).withOpacity(0.1),
               child: Icon(
                 category['icon'] as IconData,
-                color: Colors.deepPurple,
+                color: category['color'] as Color,
               ),
             ),
             title: Text(
@@ -84,7 +65,15 @@ class Categories extends StatelessWidget {
               style: const TextStyle(color: Colors.white70),
             ),
             onTap: () {
-              // Handle category tap (e.g., navigate to details page)
+              _showEditCategoryDialog(
+                context,
+                category,
+                (updatedCategory) {
+                  setState(() {
+                    categories[index] = updatedCategory.cast<String, Object>();
+                  });
+                },
+              );
             },
           );
         },
@@ -97,8 +86,8 @@ class Categories extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddCategoryDialog(context),
-        backgroundColor: Color(0xff4b3887),
-        child: Icon(
+        backgroundColor: const Color(0xff4b3887),
+        child: const Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -106,22 +95,50 @@ class Categories extends StatelessWidget {
     );
   }
 
+  void _showEditCategoryDialog(BuildContext context, Map<String, Object> category, Function(Map<String, dynamic>) onSave) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EditCategoryDialog(
+          name: category['name'] as String,
+          budget: category['budget'] as String,
+          icon: category['icon'] as IconData,
+          color: category['color'] as Color,
+          onSave: onSave,
+        );
+      },
+    );
+  }
+
+
   void _showAddCategoryDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AddCategoryDialog();
+        return AddCategoryDialog(
+          onSave: (newCategory) {
+            setState(() {
+              categories.add(newCategory);
+            });
+          },
+        );
       },
     );
   }
 }
 
 class AddCategoryDialog extends StatefulWidget {
+  final Function(Map<String, Object>) onSave;
+
+  const AddCategoryDialog({Key? key, required this.onSave}) : super(key: key);
+
   @override
   _AddCategoryDialogState createState() => _AddCategoryDialogState();
 }
 
 class _AddCategoryDialogState extends State<AddCategoryDialog> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _budgetController = TextEditingController();
   Color selectedColor = Colors.primaries[0];
   IconData selectedIcon = Icons.category;
 
@@ -152,6 +169,7 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
                 SizedBox(width: 8),
                 Expanded(
                   child: TextField(
+                    controller: _nameController,
                     decoration: InputDecoration(
                       labelText: "Name",
                       labelStyle: TextStyle(color: Colors.white70),
@@ -169,6 +187,7 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
             ),
             SizedBox(height: 16),
             TextField(
+              controller: _budgetController,
               decoration: InputDecoration(
                 labelText: "Budget",
                 labelStyle: TextStyle(color: Colors.white70),
@@ -249,8 +268,18 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Handle save action
-                Navigator.pop(context);
+                if (_nameController.text.isNotEmpty) {
+                  final newCategory = {
+                    "icon": selectedIcon,
+                    "name": _nameController.text,
+                    "budget": _budgetController.text.isNotEmpty
+                        ? _budgetController.text
+                        : "No budget",
+                    "color": selectedColor,
+                  };
+                  widget.onSave(newCategory);
+                  Navigator.pop(context);
+                }
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
