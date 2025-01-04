@@ -14,6 +14,7 @@ class AuthService extends GetxService {
 
   void _startInactivityTimer() {
     _inactivityTimer?.cancel();
+    
     _inactivityTimer = Timer(const Duration(minutes: 10), _handleInactivity);
   }
 
