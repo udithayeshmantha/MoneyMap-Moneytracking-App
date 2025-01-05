@@ -5,23 +5,27 @@ class AccountCard extends StatelessWidget {
   final double balance;
   final double income;
   final double expense;
+  final VoidCallback onDelete;
+  final VoidCallback onEdit;
 
   AccountCard({
     required this.accountName,
     required this.balance,
     required this.income,
     required this.expense,
+    required this.onDelete,
+    required this.onEdit,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 210,
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(23, 42, 46, 1),
         borderRadius: BorderRadius.circular(16),
       ),
-      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -31,48 +35,41 @@ class AccountCard extends StatelessWidget {
               Text(
                 accountName,
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               PopupMenuButton<String>(
                 color: Colors.grey[900],
                 onSelected: (value) {
                   if (value == 'Edit') {
-                    // Handle edit action
-                    print('Edit selected');
+                    onEdit();
                   } else if (value == 'Delete') {
-                    // Handle delete action
-                    print('Delete selected');
+                    onDelete();
                   }
                 },
-                itemBuilder: (BuildContext context) {
-                  return {'Edit', 'Delete'}.map((String choice) {
+                itemBuilder: (context) {
+                  return {'Edit', 'Delete'}.map((choice) {
                     return PopupMenuItem<String>(
                       value: choice,
                       child: Text(
                         choice,
                         style: TextStyle(
-                          color: choice == 'Delete'
-                              ? Colors.red
-                              : Colors.white, // Change text color here
+                          color: choice == 'Delete' ? Colors.red : Colors.white,
                         ),
                       ),
                     );
                   }).toList();
                 },
-                icon: Icon(
-                  Icons.more_vert,
-                  color: Colors.white,
-                ),
-              )
+                icon: Icon(Icons.more_vert, color: Colors.white),
+              ),
             ],
           ),
           SizedBox(height: 8),
           Text(
             'Total Balance',
-            style: TextStyle(
-                fontSize: 16, color: const Color.fromARGB(255, 248, 244, 244)),
+            style: TextStyle(fontSize: 16, color: Colors.white70),
           ),
           Text(
             'Rs${balance.toStringAsFixed(2)}',
@@ -82,49 +79,27 @@ class AccountCard extends StatelessWidget {
           SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Income\n',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    TextSpan(
-                      text: 'Rs${income.toStringAsFixed(2)}',
-                      style: TextStyle(color: Colors.green, fontSize: 16),
-                    ),
-                  ],
-                ),
-              ),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Expense\n',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    TextSpan(
-                      text: 'Rs${expense.toStringAsFixed(2)}',
-                      style: TextStyle(color: Colors.red, fontSize: 16),
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  Icon(
-                    Icons.wallet,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ],
-              )
+              _buildInfoText('Income', income, Colors.green),
+              _buildInfoText('Expense', expense, Colors.red),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildInfoText(String label, double amount, Color color) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TextStyle(color: Colors.white, fontSize: 12)),
+        Text(
+          'Rs${amount.toStringAsFixed(2)}',
+          style: TextStyle(
+              color: color, fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }

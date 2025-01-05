@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracking_app/components/bottom_nav_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/account_card.dart';
 
 class AccountsScreen extends StatelessWidget {
@@ -23,11 +23,40 @@ class AccountsScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: AccountCard(
-          accountName: "Cash",
-          balance: 10000,
-          income: 0,
-          expense: 0,
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('accounts').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(
+                  child: Text('Error fetching data',
+                      style: TextStyle(color: Colors.white)));
+            }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Center(
+                  child: Text('No accounts available',
+                      style: TextStyle(color: Colors.white)));
+            }
+
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                var account =
+                    snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                return AccountCard(
+                  accountName: account['name'] ?? 'Unknown',
+                  balance: (account['balance'] as num).toDouble(),
+                  income: (account['income'] as num).toDouble(),
+                  expense: (account['expense'] as num).toDouble(),
+                  onDelete: () => _deleteAccount(snapshot.data!.docs[index].id),
+                  onEdit: () => _showEditAccountDialog(
+                      context, snapshot.data!.docs[index].id),
+                );
+              },
+            );
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -41,6 +70,10 @@ class AccountsScreen extends StatelessWidget {
     );
   }
 
+  void _deleteAccount(String id) {
+    FirebaseFirestore.instance.collection('accounts').doc(id).delete();
+  }
+
   void _showAddAccountDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -48,6 +81,10 @@ class AccountsScreen extends StatelessWidget {
         return AddAccountDialog();
       },
     );
+  }
+
+  void _showEditAccountDialog(BuildContext context, String id) {
+    // Implement the edit account dialog
   }
 }
 
@@ -57,8 +94,15 @@ class AddAccountDialog extends StatefulWidget {
 }
 
 class _AddAccountDialogState extends State<AddAccountDialog> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _holderNameController = TextEditingController();
+  final TextEditingController _accountNumberController =
+      TextEditingController();
+
   Color selectedColor = Colors.primaries[0];
   IconData selectedIcon = Icons.person;
+
+  final FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +131,7 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
                 SizedBox(width: 8),
                 Expanded(
                   child: TextField(
+                    controller: _nameController,
                     decoration: InputDecoration(
                       labelText: "Name",
                       labelStyle: TextStyle(color: Colors.white70),
@@ -104,6 +149,7 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
             ),
             SizedBox(height: 16),
             TextField(
+              controller: _holderNameController,
               decoration: InputDecoration(
                 labelText: "Holder name",
                 labelStyle: TextStyle(color: Colors.white70),
@@ -118,6 +164,7 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
             ),
             SizedBox(height: 16),
             TextField(
+              controller: _accountNumberController,
               decoration: InputDecoration(
                 labelText: "A/C Number",
                 labelStyle: TextStyle(color: Colors.white70),
@@ -136,23 +183,7 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: Colors.primaries.map((color) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedColor = color;
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4.0),
-                      child: CircleAvatar(
-                        backgroundColor: color,
-                        radius: 16,
-                        child: selectedColor == color
-                            ? Icon(Icons.check, color: Colors.white, size: 16)
-                            : null,
-                      ),
-                    ),
-                  );
+                  return _buildColorSelector(color);
                 }).toList(),
               ),
             ),
@@ -168,32 +199,14 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
                   Icons.wallet_travel,
                   Icons.attach_money,
                 ].map((icon) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIcon = icon;
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4.0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.grey[800],
-                        radius: 16,
-                        child: Icon(
-                          icon,
-                          color: selectedIcon == icon
-                              ? Colors.white
-                              : Colors.white70,
-                        ),
-                      ),
-                    ),
-                  );
+                  return _buildIconSelector(icon);
                 }).toList(),
               ),
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                await _saveAccountToFirestore();
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
@@ -211,5 +224,67 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
         ),
       ),
     );
+  }
+
+  Widget _buildColorSelector(Color color) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedColor = color;
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        child: CircleAvatar(
+          backgroundColor: color,
+          radius: 16,
+          child: selectedColor == color
+              ? Icon(Icons.check, color: Colors.white, size: 16)
+              : null,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconSelector(IconData icon) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedIcon = icon;
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        child: CircleAvatar(
+          backgroundColor: Colors.grey[800],
+          radius: 16,
+          child: Icon(
+            icon,
+            color: selectedIcon == icon ? Colors.white : Colors.white70,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _saveAccountToFirestore() async {
+    final accountData = {
+      'name': _nameController.text,
+      'holderName': _holderNameController.text,
+      'accountNumber': _accountNumberController.text,
+      'color': selectedColor.value,
+      'icon': selectedIcon.codePoint,
+      'balance': 0,
+      'income': 0,
+      'expense': 0,
+    };
+
+    try {
+      DocumentReference docRef =
+          await db.collection('accounts').add(accountData);
+      print('Account added with ID: ${docRef.id}');
+    } catch (e) {
+      print('Error adding account: $e');
+    }
   }
 }
