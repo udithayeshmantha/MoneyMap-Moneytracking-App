@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:money_tracking_app/components/bottom_nav_bar.dart';
 import 'package:money_tracking_app/models/userdetails.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 String greeting() {
   var hour = DateTime.now().hour;
@@ -9,9 +9,9 @@ String greeting() {
     return 'Morning';
   }
   if (hour < 17) {
-    return 'Afternoon';
+    return 'Evening';
   }
-  return 'Evening';
+  return 'Night';
 }
 
 class Home extends StatelessWidget {
@@ -52,59 +52,89 @@ class Home extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Balance Card
-            Container(
-              width: double.infinity, // Adjust width as needed
-              height: 200, // Adjust height as needed
-              decoration: BoxDecoration(
-                color: Colors.teal, // Background color of the card
-                borderRadius: BorderRadius.circular(20), // Rounded corners
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0), // Padding inside the card
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
+            StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('accounts').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Center(child: Text('No accounts found.'));
+                }
+
+                var accounts = snapshot.data!.docs
+                    .map((doc) => doc.data() as Map<String, dynamic>)
+                    .toList();
+                double totalIncome = accounts.fold(
+                    0,
+                    (sum, account) =>
+                        sum + (account['income'] as num).toDouble());
+                double totalExpense = accounts.fold(
+                    0,
+                    (sum, account) =>
+                        sum + (account['expense'] as num).toDouble());
+
+                return Container(
+                  width: double.infinity, // Adjust width as needed
+                  height: 200, // Adjust height as needed
+                  decoration: BoxDecoration(
+                    color: Colors.teal, // Background color of the card
+                    borderRadius: BorderRadius.circular(20),
+                    // Rounded corners
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.all(20.0), // Padding inside the card
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Rs0',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Balance',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Cash',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 16,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rs${totalIncome - totalExpense}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              'Balance',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
-                        Icon(
-                          Icons.credit_card, // Use desired icon
-                          color: Colors.white70,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Cash',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Icon(
+                              Icons.credit_card, // Use desired icon
+                              color: Colors.white70,
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 16),
@@ -121,84 +151,100 @@ class Home extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                DropdownButton<String>(
-                  underline: Container(),
-                  dropdownColor: Colors.black,
-                  value: "01 Dec - 30 Dec",
-                  items: ["01 Dec - 30 Dec", "01 Jan - 31 Jan"]
-                      .map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ))
-                      .toList(),
-                  onChanged: (_) {},
-                )
               ],
             ),
+            SizedBox(height: 10),
 
             // Income & Expense Cards
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade900,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Income",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+            StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('accounts').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Center(child: Text('No accounts found.'));
+                }
+
+                var accounts = snapshot.data!.docs
+                    .map((doc) => doc.data() as Map<String, dynamic>)
+                    .toList();
+                double totalIncome = accounts.fold(
+                    0,
+                    (sum, account) =>
+                        sum + (account['income'] as num).toDouble());
+                double totalExpense = accounts.fold(
+                    0,
+                    (sum, account) =>
+                        sum + (account['expense'] as num).toDouble());
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade900,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          "Rs0",
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Income",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Rs$totalIncome',
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 107, 29, 24),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Expense",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 107, 29, 24),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          "Rs0",
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Expense",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Rs$totalExpense',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
             SizedBox(height: 20),
             // No Payments Message
