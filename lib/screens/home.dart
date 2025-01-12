@@ -53,8 +53,9 @@ class Home extends StatelessWidget {
 
             // Balance Card
             StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection('accounts').snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('transactions')
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -63,32 +64,46 @@ class Home extends StatelessWidget {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No accounts found.'));
+                  return Container(
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.teal,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'No transactions found.',
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                    ),
+                  );
                 }
 
-                var accounts = snapshot.data!.docs
+                var transactions = snapshot.data!.docs
                     .map((doc) => doc.data() as Map<String, dynamic>)
                     .toList();
-                double totalIncome = accounts.fold(
+                double totalIncome = transactions.fold(
                     0,
-                    (sum, account) =>
-                        sum + (account['income'] as num).toDouble());
-                double totalExpense = accounts.fold(
+                    (sum, transaction) => transaction['type'] == 'income'
+                        ? sum + (transaction['amount'] as num).toDouble()
+                        : sum);
+                double totalExpense = transactions.fold(
                     0,
-                    (sum, account) =>
-                        sum + (account['expense'] as num).toDouble());
+                    (sum, transaction) => transaction['type'] == 'expense'
+                        ? sum + (transaction['amount'] as num).toDouble()
+                        : sum);
+                double balance = totalIncome - totalExpense;
 
                 return Container(
-                  width: double.infinity, // Adjust width as needed
-                  height: 200, // Adjust height as needed
+                  width: double.infinity,
+                  height: 200,
                   decoration: BoxDecoration(
-                    color: Colors.teal, // Background color of the card
+                    color: Colors.teal,
                     borderRadius: BorderRadius.circular(20),
-                    // Rounded corners
                   ),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.all(20.0), // Padding inside the card
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,7 +112,7 @@ class Home extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Rs${totalIncome - totalExpense}',
+                              'Rs${balance.toStringAsFixed(2)}',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 28,
@@ -125,7 +140,7 @@ class Home extends StatelessWidget {
                               ),
                             ),
                             Icon(
-                              Icons.credit_card, // Use desired icon
+                              Icons.credit_card,
                               color: Colors.white70,
                             ),
                           ],
@@ -157,8 +172,9 @@ class Home extends StatelessWidget {
 
             // Income & Expense Cards
             StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection('accounts').snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('transactions')
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -167,20 +183,22 @@ class Home extends StatelessWidget {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No accounts found.'));
+                  return Center(child: Text('No transactions found.'));
                 }
 
-                var accounts = snapshot.data!.docs
+                var transactions = snapshot.data!.docs
                     .map((doc) => doc.data() as Map<String, dynamic>)
                     .toList();
-                double totalIncome = accounts.fold(
+                double totalIncome = transactions.fold(
                     0,
-                    (sum, account) =>
-                        sum + (account['income'] as num).toDouble());
-                double totalExpense = accounts.fold(
+                    (sum, transaction) => transaction['type'] == 'income'
+                        ? sum + (transaction['amount'] as num).toDouble()
+                        : sum);
+                double totalExpense = transactions.fold(
                     0,
-                    (sum, account) =>
-                        sum + (account['expense'] as num).toDouble());
+                    (sum, transaction) => transaction['type'] == 'expense'
+                        ? sum + (transaction['amount'] as num).toDouble()
+                        : sum);
 
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,7 +220,7 @@ class Home extends StatelessWidget {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Rs$totalIncome',
+                              'Rs${totalIncome.toStringAsFixed(2)}',
                               style: TextStyle(
                                 color: Colors.green,
                                 fontSize: 20,
@@ -231,7 +249,7 @@ class Home extends StatelessWidget {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Rs$totalExpense',
+                              'Rs${totalExpense.toStringAsFixed(2)}',
                               style: TextStyle(
                                 color: Colors.red,
                                 fontSize: 20,
@@ -247,11 +265,57 @@ class Home extends StatelessWidget {
               },
             ),
             SizedBox(height: 20),
-            // No Payments Message
-            const Center(
-              child: Text(
-                "No payments!",
-                style: TextStyle(color: Colors.white70, fontSize: 16),
+
+            // Transaction List
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('transactions')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Center(child: Text('No transactions found.'));
+                  }
+
+                  var transactions = snapshot.data!.docs
+                      .map((doc) => doc.data() as Map<String, dynamic>)
+                      .toList();
+
+                  return ListView.builder(
+                    itemCount: transactions.length,
+                    itemBuilder: (context, index) {
+                      var transaction = transactions[index];
+                      return Card(
+                        color: transaction['type'] == 'income'
+                            ? Colors.green.shade900
+                            : Colors.red.shade900,
+                        child: ListTile(
+                          title: Text(
+                            transaction['title'],
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            '${transaction['date']} - ${transaction['time']}',
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                          trailing: Text(
+                            'Rs${(transaction['amount'] as num).toDouble().toStringAsFixed(2)}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],

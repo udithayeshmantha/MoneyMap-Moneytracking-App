@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
-Widget CustomTextField(String label, String hintText,
-      {TextInputType keyboardType = TextInputType.text}) {
+class CustomTextField extends StatelessWidget {
+  final String label;
+  final String hintText;
+  final TextInputType keyboardType;
+  final ValueChanged<String> onChanged;
+
+  const CustomTextField({
+    required this.label,
+    required this.hintText,
+    this.keyboardType = TextInputType.text,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return TextField(
       style: const TextStyle(color: Colors.white),
       keyboardType: keyboardType,
@@ -21,6 +34,8 @@ Widget CustomTextField(String label, String hintText,
           borderRadius: BorderRadius.circular(15),
           borderSide: const BorderSide(color: Color(0xffcdbdfb)),
         ),
-      )
+      ),
+      onChanged: onChanged,
     );
   }
+}

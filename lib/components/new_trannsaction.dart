@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:money_tracking_app/widgets/custom_text_field.dart';
 import 'package:money_tracking_app/widgets/select_account.dart';
 import 'package:money_tracking_app/widgets/select_category.dart';
@@ -12,9 +13,54 @@ class NewTransactionScreen extends StatefulWidget {
 
 class _NewTransactionScreenState extends State<NewTransactionScreen> {
   bool isIncome = true; // Toggle between Income and Expense
-  DateTime selectedDate = DateTime.now(); // Selected Date
-  TimeOfDay selectedTime = TimeOfDay.now(); // Selected Time
-  String? selectedCategory; // Currently selected category
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
+  String? selectedCategory;
+  String title = '';
+  String description = '';
+  double amount = 0.0;
+
+  final _firestore = FirebaseFirestore.instance;
+
+  Future<void> _saveTransaction() async {
+    try {
+      String type = isIncome ? 'income' : 'expense';
+      String formattedDate = "${selectedDate.toLocal()}".split(' ')[0];
+      String formattedTime = selectedTime.format(context);
+
+      // Save transaction to Firestore
+      await _firestore.collection('transactions').add({
+        'title': title,
+        'description': description,
+        'amount': amount,
+        'date': formattedDate,
+        'time': formattedTime,
+        'type': type,
+        'category': selectedCategory,
+      });
+
+      // Update balance
+      DocumentReference balanceDoc =
+          _firestore.collection('balance').doc('main');
+      await _firestore.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(balanceDoc);
+        if (!snapshot.exists) {
+          balanceDoc.set({'balance': 0.0});
+        }
+        double currentBalance = (snapshot['balance'] as num).toDouble();
+        double updatedBalance =
+            isIncome ? currentBalance + amount : currentBalance - amount;
+
+        transaction.update(balanceDoc, {'balance': updatedBalance});
+      });
+
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save transaction: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +91,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Income and Expense Toggle
                     Row(
                       children: [
                         Expanded(
@@ -53,7 +98,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                             onTap: () {
                               setState(() {
                                 isIncome = true;
-                                selectedCategory = null; // Reset category
+                                selectedCategory = null;
                               });
                             },
                             child: Container(
@@ -80,7 +125,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                             onTap: () {
                               setState(() {
                                 isIncome = false;
-                                selectedCategory = null; // Reset category
+                                selectedCategory = null;
                               });
                             },
                             child: Container(
@@ -104,22 +149,26 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
-
-                    // Title TextField
-                    CustomTextField("Title", "Enter transaction title"),
-                    const SizedBox(height: 20),
-
-                    // Description TextField
                     CustomTextField(
-                        "Description", "Enter transaction description"),
+                      label: "Title",
+                      hintText: "Enter transaction title",
+                      onChanged: (value) => setState(() => title = value),
+                    ),
                     const SizedBox(height: 20),
-
-                    // Amount TextField
-                    CustomTextField("Rs 0.0", "Enter amount",
-                        keyboardType: TextInputType.number),
+                    CustomTextField(
+                      label: "Description",
+                      hintText: "Enter transaction description",
+                      onChanged: (value) => setState(() => description = value),
+                    ),
                     const SizedBox(height: 20),
-
-                    // Date and Time Row
+                    CustomTextField(
+                      label: "Rs 0.0",
+                      hintText: "Enter amount",
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) => setState(
+                          () => amount = double.tryParse(value) ?? 0.0),
+                    ),
+                    const SizedBox(height: 20),
                     Row(
                       children: [
                         Expanded(
@@ -143,28 +192,27 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                            child: GestureDetector(
-                          onTap: () async {
-                            TimeOfDay? pickedTime = await showTimePicker(
-                              context: context,
-                              initialTime: selectedTime,
-                            );
-                            if (pickedTime != null) {
-                              setState(() {
-                                selectedTime = pickedTime;
-                              });
-                            }
-                          },
-                          child: _dateOrTimeContainer(
-                              "Time", selectedTime.format(context)),
-                        )),
+                          child: GestureDetector(
+                            onTap: () async {
+                              TimeOfDay? pickedTime = await showTimePicker(
+                                context: context,
+                                initialTime: selectedTime,
+                              );
+                              if (pickedTime != null) {
+                                setState(() {
+                                  selectedTime = pickedTime;
+                                });
+                              }
+                            },
+                            child: _dateOrTimeContainer(
+                                "Time", selectedTime.format(context)),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    // Select Account Section
                     SelectAccount(),
                     const SizedBox(height: 20),
-                    // Select Category Section
                     SelectCategory(),
                     const SizedBox(height: 20),
                   ],
@@ -172,16 +220,12 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
               ),
             ),
           ),
-
-          // Save Button
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // Save transaction logic here
-                },
+                onPressed: _saveTransaction,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey[800],
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -196,9 +240,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
               ),
             ),
           ),
-          SizedBox(
-            height: 15,
-          )
+          const SizedBox(height: 15),
         ],
       ),
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
@@ -208,6 +250,10 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
   Widget _dateOrTimeContainer(String label, String value) {
     return Container(
       padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Row(
         children: [
           Icon(label == "Date" ? Icons.calendar_today : Icons.access_time,
