@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class AccountCard extends StatelessWidget {
   final String accountName;
-  final double balance;
   final double income;
   final double expense;
   final VoidCallback onDelete;
@@ -10,7 +9,6 @@ class AccountCard extends StatelessWidget {
 
   AccountCard({
     required this.accountName,
-    required this.balance,
     required this.income,
     required this.expense,
     required this.onDelete,
@@ -19,6 +17,8 @@ class AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double balance = income - expense;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       padding: const EdgeInsets.all(16.0),
