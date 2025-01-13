@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:money_tracking_app/widgets/custom_text_field.dart';
 import 'package:money_tracking_app/widgets/select_account.dart';
 import 'package:money_tracking_app/widgets/select_category.dart';
@@ -24,12 +25,22 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
 
   Future<void> _saveTransaction() async {
     try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        throw Exception("User not logged in");
+      }
+
+      String uid = user.uid;
       String type = isIncome ? 'income' : 'expense';
       String formattedDate = "${selectedDate.toLocal()}".split(' ')[0];
       String formattedTime = selectedTime.format(context);
 
-      // Save transaction to Firestore
-      await _firestore.collection('transactions').add({
+      // Save transaction to Firestore under the user's UID
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('transactions')
+          .add({
         'title': title,
         'description': description,
         'amount': amount,
@@ -39,20 +50,40 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
         'category': selectedCategory,
       });
 
-      // Update balance
-      DocumentReference balanceDoc =
-          _firestore.collection('balance').doc('main');
-      await _firestore.runTransaction((transaction) async {
-        DocumentSnapshot snapshot = await transaction.get(balanceDoc);
-        if (!snapshot.exists) {
-          balanceDoc.set({'balance': 0.0});
-        }
-        double currentBalance = (snapshot['balance'] as num).toDouble();
-        double updatedBalance =
-            isIncome ? currentBalance + amount : currentBalance - amount;
+      // Update balance with retry logic
+      DocumentReference balanceDoc = _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('balance')
+          .doc('main');
 
-        transaction.update(balanceDoc, {'balance': updatedBalance});
-      });
+      const int maxRetries = 5;
+      int retryCount = 0;
+      bool success = false;
+
+      while (retryCount < maxRetries && !success) {
+        try {
+          await _firestore.runTransaction((transaction) async {
+            DocumentSnapshot snapshot = await transaction.get(balanceDoc);
+            if (!snapshot.exists) {
+              await balanceDoc.set({'balance': 0.0});
+              snapshot = await transaction.get(balanceDoc);
+            }
+            double currentBalance = (snapshot['balance'] as num).toDouble();
+            double updatedBalance =
+                isIncome ? currentBalance + amount : currentBalance - amount;
+
+            transaction.update(balanceDoc, {'balance': updatedBalance});
+          });
+          success = true;
+        } catch (e) {
+          retryCount++;
+          if (retryCount == maxRetries) {
+            throw Exception(
+                "Failed to update balance after $maxRetries attempts");
+          }
+        }
+      }
 
       Navigator.pop(context);
     } catch (e) {
