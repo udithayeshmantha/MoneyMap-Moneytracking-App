@@ -50,6 +50,17 @@ class SettingsScreen extends StatelessWidget {
             title: "Import",
             subtitle: "Import from backup file",
           ),
+          _buildSettingItem(
+            icon: Icons.logout,
+            iconColor: Colors.red,
+            title: "Logout",
+            subtitle: "Sign out of your account",
+            onTap: () {
+              // Add your logout logic here
+              // For example, you can navigate to the login screen
+              Navigator.pushReplacementNamed(context, '/Landing');
+            },
+          ),
         ],
       ),
     );
@@ -60,6 +71,7 @@ class SettingsScreen extends StatelessWidget {
     required Color iconColor,
     required String title,
     required String subtitle,
+    VoidCallback? onTap,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -79,9 +91,7 @@ class SettingsScreen extends StatelessWidget {
           subtitle,
           style: const TextStyle(color: Colors.grey, fontSize: 14),
         ),
-        onTap: () {
-          // Add actions for each setting if required
-        },
+        onTap: onTap,
       ),
     );
   }
