@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
 class Home extends StatelessWidget {
@@ -291,26 +292,32 @@ class Home extends StatelessWidget {
                           itemBuilder: (context, index) {
                             var transaction = transactions[index];
                             return Card(
-                              color: transaction['type'] == 'income'
-                                  ? Colors.green.shade900
-                                  : Colors.red.shade900,
+                              elevation: 0,
+                              color: Colors.transparent,
                               child: ListTile(
                                 title: Text(
                                   transaction['title'],
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text(
-                                  '${transaction['date']} - ${transaction['time']}',
+                                  _formatDateTime(
+                                      transaction['date'], transaction['time']),
                                   style: TextStyle(color: Colors.white70),
                                 ),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      'Rs${(transaction['amount'] as num).toDouble().toStringAsFixed(2)}',
+                                      '${transaction['type'] == 'income' ? '' : '-'}Rs${(transaction['amount'] as num).toDouble().toStringAsFixed(2)}',
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: transaction['type'] == 'income'
+                                            ? Colors.green
+                                            : Colors.red,
                                         fontWeight: FontWeight.bold,
+                                        fontSize: 16,
                                       ),
                                     ),
                                   ],
@@ -408,5 +415,31 @@ class Home extends StatelessWidget {
       return 'Evening';
     }
     return 'Night';
+  }
+
+  String _formatDateTime(String date, String time) {
+    try {
+      // Parse the date part safely
+      DateTime datePart = DateTime.parse(date);
+
+      // Parse the time part using DateFormat
+      DateFormat timeFormat = DateFormat.jm(); // Expected format: '5:59 PM'
+      DateTime timePart = timeFormat
+          .parseLoose(time.trim()); // Use parseLoose() for more lenient parsing
+
+      // Combine the date and time parts
+      DateTime dateTime = DateTime(
+        datePart.year,
+        datePart.month,
+        datePart.day,
+        timePart.hour,
+        timePart.minute,
+      );
+
+      // Format the combined DateTime
+      return DateFormat('dd MMM yyyy, hh:mm a').format(dateTime);
+    } catch (e) {
+      return 'Invalid date or time format: $e';
+    }
   }
 }
