@@ -86,11 +86,12 @@ class Landing extends StatelessWidget {
             const Spacer(),
             const SizedBox(height: 20),
             Center(
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 0),
                       backgroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 15),
@@ -109,9 +110,10 @@ class Landing extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 0),
                       backgroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 15),

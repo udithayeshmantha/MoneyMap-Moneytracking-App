@@ -22,7 +22,10 @@ class Signup extends StatelessWidget {
         );
 
         // Save user details to Firestore
-        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
           'name': nameController.text,
           'email': emailController.text.trim(),
         });
@@ -59,9 +62,10 @@ class Signup extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(
+            top: 70.0, left: 20.0, right: 20.0, bottom: 20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
@@ -71,7 +75,7 @@ class Signup extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             const Text(
-              'Hi! welcome to Fintracker',
+              'Hi! welcome to MoneyMap',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24.0,
@@ -108,42 +112,49 @@ class Signup extends StatelessWidget {
               cursorColor: Colors.white,
               obscureText: true,
             ),
-            const SizedBox(height: 40.0),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (nameController.text.isEmpty ||
-                      emailController.text.isEmpty ||
-                      passwordController.text.isEmpty) {
-                    Get.snackbar(
-                      'Error',
-                      'All fields are required',
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white,
-                    );
-                  } else {
-                    _register();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 150,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (nameController.text.isEmpty ||
+                          emailController.text.isEmpty ||
+                          passwordController.text.isEmpty) {
+                        Get.snackbar(
+                          'Error',
+                          'All fields are required',
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                        );
+                      } else {
+                        _register();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Sign Up',
+                            style:
+                                TextStyle(fontSize: 18.0, color: Colors.black)),
+                        SizedBox(width: 10.0),
+                        Icon(Icons.arrow_forward, color: Colors.black),
+                      ],
+                    ),
                   ),
                 ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Next',
-                        style: TextStyle(fontSize: 18.0, color: Colors.black)),
-                    SizedBox(width: 10.0),
-                    Icon(Icons.arrow_forward, color: Colors.black),
-                  ],
-                ),
-              ),
+              ],
             ),
           ],
         ),

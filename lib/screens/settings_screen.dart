@@ -85,18 +85,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             subtitle: "Sri Lanka Rupee",
           ),
           _buildSettingItem(
-            icon: Icons.download,
-            iconColor: Colors.purple,
-            title: "Export",
-            subtitle: "Export to file",
-          ),
-          _buildSettingItem(
-            icon: Icons.upload,
-            iconColor: Colors.purple,
-            title: "Import",
-            subtitle: "Import from backup file",
-          ),
-          _buildSettingItem(
             icon: Icons.logout,
             iconColor: Colors.red,
             title: "Logout",
