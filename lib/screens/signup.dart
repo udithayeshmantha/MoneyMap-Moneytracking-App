@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:money_tracking_app/models/userdetails.dart';
 
 class Signup extends StatelessWidget {
@@ -19,6 +20,13 @@ class Signup extends StatelessWidget {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
+
+        // Save user details to Firestore
+        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+          'name': nameController.text,
+          'email': emailController.text.trim(),
+        });
+
         final userDetails = UserDetails(name: nameController.text);
         Get.toNamed('/bottomnavbar', arguments: userDetails);
       } on FirebaseAuthException catch (e) {
