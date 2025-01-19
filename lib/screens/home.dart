@@ -41,7 +41,7 @@ class Home extends StatelessWidget {
           return SingleChildScrollView(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
                   Text(
@@ -101,9 +101,18 @@ class Home extends StatelessWidget {
                         children: [
                           Container(
                             width: double.infinity,
-                            height: 200,
+                            height: 175,
                             decoration: BoxDecoration(
-                              color: Colors.teal,
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromARGB(
+                                      255, 0, 95, 84), // Teal shade 700
+                                  Color.fromARGB(
+                                      255, 6, 201, 181) // Teal shade 300
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Padding(
@@ -143,7 +152,7 @@ class Home extends StatelessWidget {
                                         'Cash',
                                         style: TextStyle(
                                           color: Colors.white70,
-                                          fontSize: 16,
+                                          fontSize: 14,
                                         ),
                                       ),
                                       Icon(
@@ -178,7 +187,8 @@ class Home extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Container(
-                                  padding: const EdgeInsets.all(16),
+                                  padding: const EdgeInsets.only(
+                                      left: 16, top: 10, bottom: 10, right: 16),
                                   decoration: BoxDecoration(
                                     color: Colors.green.shade900,
                                     borderRadius: BorderRadius.circular(20),
@@ -190,9 +200,10 @@ class Home extends StatelessWidget {
                                       Text(
                                         "Income",
                                         style: TextStyle(
-                                            color: Colors.white, fontSize: 16),
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      SizedBox(height: 8),
                                       Text(
                                         'Rs${totalIncome.toStringAsFixed(2)}',
                                         style: TextStyle(
@@ -205,10 +216,11 @@ class Home extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: 10),
                               Expanded(
                                 child: Container(
-                                  padding: const EdgeInsets.all(16),
+                                  padding: const EdgeInsets.only(
+                                      left: 16, top: 10, bottom: 10, right: 16),
                                   decoration: BoxDecoration(
                                     color:
                                         const Color.fromARGB(255, 107, 29, 24),
@@ -221,9 +233,10 @@ class Home extends StatelessWidget {
                                       Text(
                                         "Expense",
                                         style: TextStyle(
-                                            color: Colors.white, fontSize: 16),
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      SizedBox(height: 8),
                                       Text(
                                         'Rs${totalExpense.toStringAsFixed(2)}',
                                         style: TextStyle(
@@ -245,6 +258,7 @@ class Home extends StatelessWidget {
                   SizedBox(height: 20),
 
                   // Transaction List
+
                   SizedBox(
                     height: 400, // Adjust height as needed
                     child: StreamBuilder<QuerySnapshot>(
@@ -299,19 +313,15 @@ class Home extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    IconButton(
-                                      icon:
-                                          Icon(Icons.edit, color: Colors.white),
-                                      onPressed: () {
-                                        _showEditTransactionDialog(
-                                            context,
-                                            transaction,
-                                            uid,
-                                            snapshot.data!.docs[index].id);
-                                      },
-                                    ),
                                   ],
                                 ),
+                                onTap: () {
+                                  _showEditTransactionDialog(
+                                      context,
+                                      transaction,
+                                      uid,
+                                      snapshot.data!.docs[index].id);
+                                },
                               ),
                             );
                           },
