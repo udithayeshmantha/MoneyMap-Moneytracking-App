@@ -62,8 +62,7 @@ class Signup extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 17, 24),
       body: Padding(
-        padding: const EdgeInsets.only(
-            top: 70.0, left: 20.0, right: 20.0, bottom: 20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -112,10 +111,10 @@ class Signup extends StatelessWidget {
               cursorColor: Colors.white,
               obscureText: true,
             ),
-            Spacer(),
+            const SizedBox(height: 20.0),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(
                   width: 150,
@@ -145,7 +144,7 @@ class Signup extends StatelessWidget {
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Sign Up',
+                        Text('Next',
                             style:
                                 TextStyle(fontSize: 18.0, color: Colors.black)),
                         SizedBox(width: 10.0),
