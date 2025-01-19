@@ -1,0 +1,10 @@
+flutter_native_splash:
+    color: "#000000" # Background color of the splash screen
+    image: assets/logo.png # Path to the splash screen image
+    android: true # Enable splash screen for Android
+    ios: true # Enable splash screen for iOS
+    web: true # Enable splash screen for Web
+    android_gravity: center # Gravity for Android
+    ios_content_mode: scaleAspectFit # Content mode for iOS
+    web_image_mode: center # Image mode for Web
+    fullscreen: true # Enable fullscreen mode
