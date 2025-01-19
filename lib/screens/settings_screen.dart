@@ -1,8 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracking_app/components/bottom_nav_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  User? user = FirebaseAuth.instance.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    if (user != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .get();
+      if (userDoc.exists) {
+        setState(() {
+          _nameController.text = userDoc['name'] ?? '';
+        });
+      }
+    }
+  }
+
+  Future<void> _updateUserName() async {
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .update({
+        'name': _nameController.text,
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Name updated successfully')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +73,10 @@ class SettingsScreen extends StatelessWidget {
             icon: Icons.person,
             iconColor: Colors.purple,
             title: "Name",
-            subtitle: "Udith",
+            subtitle: "Edit your name",
+            onTap: () {
+              _showEditNameDialog();
+            },
           ),
           _buildSettingItem(
             icon: Icons.currency_rupee,
@@ -93,6 +139,38 @@ class SettingsScreen extends StatelessWidget {
         ),
         onTap: onTap,
       ),
+    );
+  }
+
+  void _showEditNameDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Name'),
+          content: TextField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              hintText: 'Enter your name',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _updateUserName();
+                Navigator.of(context).pop();
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
